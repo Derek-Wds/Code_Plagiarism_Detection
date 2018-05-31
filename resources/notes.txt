@@ -33,3 +33,8 @@ with the minimum value, select the rightmost occurrence. Now save all selected h
 
 Use robust Winnowing:  If possible break ties by selecting the same hash as the window one position to the left. 
 If not, select the rightmost minimal hash.
+
+
+First, resemblance and containment are
+expressed as set intersection problems and second, the relative size of these intersections is evaluated by a 
+process of random sampling that can be done independently for each document.
