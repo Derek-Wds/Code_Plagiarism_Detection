@@ -1,5 +1,5 @@
-from utils import *
-from winnowing import *
+from utils import polish
+from winnowing import winnow
 
 def main():
     file1 = open('codes/AVLNode.java','r')
