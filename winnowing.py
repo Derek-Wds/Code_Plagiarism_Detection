@@ -3,7 +3,6 @@ import hashlib
 def kgrams(text, k=7):
     text = list(text)
     n = len(text)
-    texts = []
     if n < k:
         yield text
     else:
