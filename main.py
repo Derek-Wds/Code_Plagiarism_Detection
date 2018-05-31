@@ -1,6 +1,9 @@
 from utils import polish
 from winnowing import winnow, select_min
+from res_con import *
 import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 def main():
     file1 = open('codes/AVLNode.java','r')
@@ -14,15 +17,17 @@ def main():
     winnow1 = winnow(test1)
     winnow2 = winnow(test2)
 
-    # 300 is just a test number, can change
-    list1 = sorted(list(winnow1))[:300]
-    list2 = sorted(list(winnow2))[:300]
-    
-    w1 = set(list1)
-    w2 = set(list2)
-    w12 = set(sorted(list(w1.union(w2))[:300]))
+    plt.figure("similarities")
+    data = []
+    labels = []
+    for i in range(1, 500):
+        #  res_con(a, b, num_of_data_to_choose_in_a_and_b)
+        data.append(res_con(winnow1, winnow2, i))
+        labels.append(i)
+    data = np.array(data)
+    labels = np.array(labels)
+    plt.plot(labels, data)
+    plt.show()
 
-    resemble = len(w1.intersection(w2).intersection(w12)) / len(w12)
-    print(resemble)
 if __name__ == "__main__":
     main()
