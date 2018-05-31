@@ -1,0 +1,35 @@
+Copy-detection proerties:
+1. Whitespaces, capitalization and puctuation should not matter.
+2. Noise suppression: any match must be large enough to imply that materail has been copied 
+instead of it is just a common word or idiom of the language.
+3. Position independence: scrambling the order of paragraphs should not influence the result. 
+Adding and removing part of a document should not affect the set of matches in the protion.
+
+
+Schemes:
+1. Eliminating undesirable differences between documents, for example deleting all the whitespaces, change to lower case, 
+change all variables' names to "V" etc.
+2. Satisfy protperty 2: we use k-gram, choose such a sharp k that most of the idioms or common words have length less than k,
+and those significant, interesting feature words and phrases have length larger than k.
+3. 
+
+
+Karp-Rabin String Matching: roll hash function that allows the hash for the i + 1th k-gram to be 
+computed quickly from the hash of the ith k-gram. 
+H(c_1 ... c_k) = c_1 ∗ b^(k−1) + c_2 ∗ b^(k−2) + ... + c_k−1 ∗ b + c_k
+H(c_2 ... c_k+1) = (H(c_1 ... c_k)−c1 ∗ b^(k−1)) ∗ b + c_k+1 
+
+
+All-to-all matching: based on KR matching, but apply to larger scale.
+
+
+Winnowing:
+Given a set of documents, we want the ﬁnd substring matches between them that satisfy two properties:
+1. If there is a substring match at least as long as the guarantee threshold: t, then this match is detected
+2. We do not detect any matches shorter than the noise threshold: k. 
+(The constants t and k ≤ t are chosen by the user.)
+Let the window size be w = t − k +1. In each window select the minimum hash value. If there is more than one hash 
+with the minimum value, select the rightmost occurrence. Now save all selected hashes as the ﬁngerprints of the document.
+
+Use robust Winnowing:  If possible break ties by selecting the same hash as the window one position to the left. 
+If not, select the rightmost minimal hash.
