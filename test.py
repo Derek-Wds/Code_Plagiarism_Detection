@@ -14,6 +14,7 @@ def main():
     winnow1 = winnow(test1)
     winnow2 = winnow(test2)
 
+    # 300 is just a test number, can change
     list1 = sorted(list(winnow1))[:300]
     list2 = sorted(list(winnow2))[:300]
     
