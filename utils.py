@@ -9,14 +9,20 @@ global func_name
 func_name = []
 
 #delete punctuations
-def punc_del(code):
-    original_list = code.split()
-    temp_code = ''.join(original_list)
-    char_list = []
-    for i in temp_code:
-        if i not in string.punctuation:
-            char_list.append(i)
-    return ''.join(char_list)
+def punc_del(code_list):
+    temp = []
+    for i in code_list:
+        temp.append(' ')
+        for j in range(len(i)):
+            if i[j] in string.punctuation:
+                if i[j] == '_':
+                    temp.append('_')
+                else:
+                    temp.append(' ')
+            else:
+                temp.append(i[j])
+    code_list = (''.join(temp)).split()
+    return code_list
 
 #change class name and function name
 def cf_change(code_list):
@@ -35,7 +41,7 @@ def cf_change(code_list):
         if "(" in code_list[i] and "." not in code_list[i] and code_list[i][0] != "(":
             temp = []
             for char in code_list[i]:
-                if char != "(" and char != "<":
+                if char != "(" and char != "<" and char != "{":
                     temp.append(char)
                 else:
                     break
@@ -46,22 +52,11 @@ def cf_change(code_list):
     return code_list
 
 
-#change variable name
+#change variable name and at the same time, change all the class name and function name
 def val_change(code_list):
     with open('conf/java.json', 'r') as f:
         common = json.load(f)
-    temp = []
-    for i in code_list:
-        temp.append(' ')
-        for j in range(len(i)):
-            if i[j] in string.punctuation:
-                if i[j] == '_':
-                    temp.append('_')
-                else:
-                    temp.append(' ')
-            else:
-                temp.append(i[j])
-    code_list = (''.join(temp)).split()
+    code_list = punc_del(code_list)
     for name in range(len(code_list)):
         if code_list[name] in class_name:
             code_list[name] = "C"
@@ -90,8 +85,13 @@ def comment_del(code_list):
             pos += 1
     return code_list
 
+
+# ---------------------break line-------------------------
+
 #main function
 def polish(code):
     original_list = code.lower().split()
-    result = val_change(cf_change(comment_del(original_list)))
+    del_com_list = comment_del(original_list)
+    cf_replace = cf_change(del_com_list)
+    result = val_change(cf_replace)
     return ''.join(result)
