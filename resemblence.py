@@ -1,4 +1,6 @@
-def res_con(test1, test2, k):
+# python file to compute resemblence
+
+def resemblence(test1, test2, k):
 
     list1 = sorted(list(test1))
     list2 = sorted(list(test2))
@@ -16,6 +18,6 @@ def res_con(test1, test2, k):
         list12 = list12[:k]
     w12 = set(list12)
 
-    resemble = len((w1.intersection(w2)).intersection(w12)) / len(w12)
+    resemble_rate = len((w1.intersection(w2)).intersection(w12)) / len(w12)
 
-    return resemble
+    return resemble_rate
