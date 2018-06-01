@@ -1,4 +1,4 @@
-#python file for noise filter
+# python file for noise filter
 
 import string
 import json
@@ -58,23 +58,24 @@ def val_change(code_list):
         common = json.load(f)
     code_list = punc_del(code_list)
     for name in range(len(code_list)):
-        if code_list[name] in class_name:
-            code_list[name] = "C"
+        if "exception" in code_list[name] or code_list[name] in common["code"]:
+            continue
         elif code_list[name] in func_name:
             code_list[name] = "F"
         else:
-            if code_list[name] not in common['code']:
-                if code_list[name].isnumeric():
-                    pass
-                else:
-                    code_list[name] = "V"
+            if code_list[name].isnumeric():
+                pass
+            else:
+                code_list[name] = "V"
     return code_list
 
 #delete comments
 def comment_del(code_list):
+    with open('conf/java.json', 'r') as f:
+        common = json.load(f)
     pos = 0
     while pos != len(code_list):
-        if code_list[pos] == "/*" or code_list[pos] == "/**":
+        if code_list[pos] in common["comment"]:
             while code_list[pos] != "*/":
                 code_list[pos] = ''
                 pos += 1
@@ -94,4 +95,4 @@ def polish(code):
     del_com_list = comment_del(original_list)
     cf_replace = cf_change(del_com_list)
     result = val_change(cf_replace)
-    return ''.join(result)
+    return result

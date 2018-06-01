@@ -7,6 +7,6 @@
     "protected", "public", "return", "short", "static", "strictfp",
     "super", "switch", "synchronized", "System", "this", "throw", "throws", "toString",
     "transient", "try", "void", "volatile", "while", "String", "System"],
-    "comment":["//", "/* */", "/** */"]
+    "comment":["//", "/*", "/**"]
 }
 

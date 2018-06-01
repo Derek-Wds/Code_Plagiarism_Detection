@@ -14,13 +14,14 @@ def main():
     test1 = polish(code1)
     test2 = polish(code2)
 
+    # print(test1)
+
     winnow1 = winnow(test1)
     winnow2 = winnow(test2)
 
-    print(winnow1)
-    
-    # print(len(winnow2))
-    # print(len(winnow1.intersection(winnow2)))
+    print(len(winnow1))
+    print(len(winnow2))
+    print(len(winnow1.intersection(winnow2)))
 
     # plt.figure("similarities")
     # data = []
