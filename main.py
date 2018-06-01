@@ -1,7 +1,6 @@
 from utils import polish
 from winnowing import winnow, select_min
-from res_con import *
-from readfile import *
+from res_con import res_con
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -18,22 +17,25 @@ def main():
     winnow1 = winnow(test1)
     winnow2 = winnow(test2)
 
-    # plt.figure("similarities")
-    # data = []
-    # labels = []
-    # for i in range(1, 500):
-    #     #  res_con(a, b, num_of_data_to_choose_in_a_and_b)
-    #     data.append(res_con(winnow1, winnow2, i))
-    #     labels.append(i)
-    # data = np.array(data)
-    # labels = np.array(labels)
-    # plt.plot(labels, data)
-    # plt.show()
+    print(len(winnow1))
+    print(len(winnow2))
+    print(len(winnow1.intersection(winnow2)))
+    plt.figure("similarities")
+    data = []
+    labels = []
+    for i in range(1, 1000):
+        #  res_con(a, b, num_of_data_to_choose_in_a_and_b)
+        data.append(res_con(winnow1, winnow2, i))
+        labels.append(i)
+    data = np.array(data)
+    labels = np.array(labels)
+    plt.plot(labels, data)
+    plt.show()
 
-    length1 = len(winnow1)
-    length2 = len(winnow2)
+    # length1 = len(winnow1)
+    # length2 = len(winnow2)
 
-    print("Similarity between two files are: ", res_con(winnow1, winnow2, int((length1 + length2)/25)))
+    # print("Similarity between two files are: ", res_con(winnow1, winnow2, int((length1 + length2)/25)))
     
 if __name__ == "__main__":
     main()

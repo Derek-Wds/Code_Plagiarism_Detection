@@ -1,3 +1,5 @@
+#python file for noise filter
+
 import string
 import json
 
@@ -6,7 +8,7 @@ class_name = []
 global func_name
 func_name = []
 
-
+#delete punctuations
 def punc_del(code):
     original_list = code.split()
     temp_code = ''.join(original_list)
@@ -16,7 +18,7 @@ def punc_del(code):
             char_list.append(i)
     return ''.join(char_list)
 
-
+#change class name and function name
 def cf_change(code_list):
     for i in range(len(code_list)):
         # change class name
@@ -44,6 +46,7 @@ def cf_change(code_list):
     return code_list
 
 
+#change variable name
 def val_change(code_list):
     with open('conf/java.json', 'r') as f:
         common = json.load(f)
@@ -72,7 +75,7 @@ def val_change(code_list):
                     code_list[name] = "V"
     return code_list
 
-
+#delete comments
 def comment_del(code_list):
     pos = 0
     while pos != len(code_list):
@@ -87,7 +90,7 @@ def comment_del(code_list):
             pos += 1
     return code_list
 
-
+#main function
 def polish(code):
     original_list = code.lower().split()
     result = val_change(cf_change(comment_del(original_list)))

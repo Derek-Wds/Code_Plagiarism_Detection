@@ -1,6 +1,6 @@
 import hashlib
 
-def kgrams(text, k=7):
+def kgrams(text, k=5):
     text = list(text)
     n = len(text)
     if n < k:
@@ -32,9 +32,9 @@ def select_min(window):
     return min(window, key = lambda x: x[1])
 
 
-def winnow(text, k=7):
+def winnow(text, k=5):
     n = len(list(text))
     text = zip(range(n), text)
     hashes = map(lambda x: winnowing_hash(x), kgrams(text, k))
-    windows = kgrams(hashes, 5)
+    windows = kgrams(hashes, 3)
     return set(map(select_min, windows))
