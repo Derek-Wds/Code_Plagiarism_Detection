@@ -2,27 +2,28 @@ from utils import polish
 from winnowing import winnow, select_min
 from resemblence import resemblence
 import numpy as np
+from readfile import get_file
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 def main():
-    file1 = open('codes/data1.java','r')
-    file2 = open('codes/data2.java','r')
-    code1 = file1.read()
-    code2 = file2.read()
+    # file1 = open('codes/data1.java','r')
+    # file2 = open('codes/data2.java','r')
+    # code1 = file1.read()
+    # code2 = file2.read()
 
-    test1 = polish(code1)
-    test2 = polish(code2)
+    # test1 = polish(code1)
+    # test2 = polish(code2)
 
-    # print(test1)
+    # # print(test1)
 
-    winnow1 = winnow(test1)
-    winnow2 = winnow(test2)
+    # winnow1 = winnow(test1)
+    # winnow2 = winnow(test2)
 
 
-    print(len(winnow1))
-    print(len(winnow2))
-    print(len(winnow1.intersection(winnow2)))
+    # print(len(winnow1))
+    # print(len(winnow2))
+    # print(len(winnow1.intersection(winnow2)))
 
     # plt.figure("similarities")
     # data = []
@@ -41,5 +42,12 @@ def main():
 
     # print("Similarity between two files are: ", resemblence(winnow1, winnow2, int((length1 + length2)/25)))
     
+    files = get_file("C:\\Users\\dingwang\\Desktop\\Java-master")
+    for i in files:
+        print(str(files[i]) + '\n')
+
+    
+
+
 if __name__ == "__main__":
     main()
