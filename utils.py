@@ -12,16 +12,26 @@ func_name = []
 #delete punctuations
 def punc_del(code_list):
     temp = []
+    flag = 0
     for i in code_list:
         temp.append(' ')
         for j in range(len(i)):
-            if i[j] in string.punctuation:
-                if i[j] == '_':
-                    temp.append('_')
-                else:
-                    temp.append(' ')
+            if flag == 1:
+                if i[j] == "'" or i[j] == '"':
+                    temp.append("V")
+                    flag = 0
+                continue
             else:
-                temp.append(i[j])
+                if i[j] in string.punctuation:
+                    if i[j] == '_':
+                        temp.append('_')
+                    else:
+                        if i[j] == '"' or i[j] == "'":
+                            flag = 1
+                        else:
+                            temp.append(' ')
+                else:
+                    temp.append(i[j])
     code_list = (''.join(temp)).split()
     return code_list
 
@@ -64,8 +74,8 @@ def val_change(code_list):
         elif code_list[name] in func_name:
             code_list[name] = "F"
         else:
-            if code_list[name].isnumeric():
-                pass
+            if code_list[name].isdigit() or code_list[name].replace('.','',1).isdigit():
+                code_list[name] = "N"
             else:
                 code_list[name] = "V"
     return code_list
@@ -77,12 +87,9 @@ def comment_del(code_list):
     pos = 0
     while pos != len(code_list):
         if code_list[pos] in common["comment"]:
-            if code_list[pos] == "//":
+            while "*/" not in code_list[pos] and "**/" not in code_list[pos]:
+                code_list[pos] = ''
                 pos += 1
-            else:
-                while "*/" not in code_list[pos] and "**/" not in code_list[pos]:
-                    code_list[pos] = ''
-                    pos += 1
         elif "*/" in code_list[pos]or "**/" in code_list[pos]:
             code_list[pos] = ''
             pos += 1
@@ -102,7 +109,7 @@ def polish(code):
     return result
 
 def read_file(f):
-    f = open(f,'r')
+    f = open(f, encoding="utf8")
     codes = f.readlines()
     num = 0
     while True:
@@ -113,9 +120,7 @@ def read_file(f):
                 num += 1
         except:
             break
-    code = ''
-    for i in codes:
-        code += i
+    code = ''.join(codes)
     test = polish(code)
     w = winnow(test)
     f.close()
