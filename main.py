@@ -54,22 +54,30 @@ def main():
     for i in file_dic:
         winnows[i] = [file_dic[i], read_file(file_dic[i])]
 
+    
     results = {}
+    num = 1
     for i in range(1, len(winnows)):
         for j in range(i + 1, len(winnows) + 1):
-            if resemblence(winnows[i][1], winnows[j][1], 500) > 0.8:
-                results[i] =  [winnows[i][0], winnows[j][0], resemblence(winnows[i][1], winnows[j][1], 500)]
+            result = resemblence(winnows[i][1], winnows[j][1], 500)
+            if result > 0.6:
+                results[num] =  [winnows[i][0], winnows[j][0], result]
+                num += 1
 
     for i in results:
-        print(i)
-        print("\n")
+        print(results[i])
 
-    # print(len(winnows[13][1]))
-    # print(len(winnows[19][1]))
-    # print(winnows[13][1].intersection(winnows[19][1]))
-    # print(read_file(file_dic[13]))
-    # print(read_file(file_dic[19]))
-    # print(resemblence(winnows[13][1], winnows[19][1], 250))
+    # a = read_file("C:\\Users\\dingwang\\Desktop\\guava-master\\android\\guava\\src\\com\\google\\common\\io\\LineReader.java")
+    # print("\n")
+    # b = read_file("C:\\Users\\dingwang\\Desktop\\guava-master\\guava\\src\\com\\google\\common\\io\\LineReader.java")
+    # print("\n")
+    # print(len(a))
+    # print("\n")
+    # print(len(b))
+    # print(a.intersection(b))
+    # print("\n")
+    # print(len(a.intersection(b)))
+    # print(resemblence(a, b, 500))
 
 if __name__ == "__main__":
     main()
