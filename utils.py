@@ -2,6 +2,7 @@
 
 import string
 import json
+from winnowing import winnow, select_min
 
 global class_name
 class_name = []
@@ -76,10 +77,13 @@ def comment_del(code_list):
     pos = 0
     while pos != len(code_list):
         if code_list[pos] in common["comment"]:
-            while code_list[pos] != "*/":
-                code_list[pos] = ''
+            if code_list[pos] == "//":
                 pos += 1
-        elif code_list[pos] == "*/":
+            else:
+                while "*/" not in code_list[pos] and "**/" not in code_list[pos]:
+                    code_list[pos] = ''
+                    pos += 1
+        elif "*/" in code_list[pos]or "**/" in code_list[pos]:
             code_list[pos] = ''
             pos += 1
         else:
@@ -96,3 +100,23 @@ def polish(code):
     cf_replace = cf_change(del_com_list)
     result = val_change(cf_replace)
     return result
+
+def read_file(f):
+    f = open(f,'r')
+    codes = f.readlines()
+    num = 0
+    while True:
+        try:
+            if "//" in codes[num]:
+                del codes[num]
+            else:
+                num += 1
+        except:
+            break
+    code = ''
+    for i in codes:
+        code += i
+    test = polish(code)
+    w = winnow(test)
+    f.close()
+    return w

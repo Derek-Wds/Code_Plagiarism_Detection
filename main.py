@@ -1,4 +1,4 @@
-from utils import polish
+from utils import polish, read_file
 from winnowing import winnow, select_min
 from resemblence import resemblence
 import numpy as np
@@ -42,11 +42,26 @@ def main():
 
     # print("Similarity between two files are: ", resemblence(winnow1, winnow2, int((length1 + length2)/25)))
     
+    file_dic = {}
+    num = 1
     files = get_file("C:\\Users\\dingwang\\Desktop\\Java-master")
     for i in files:
-        print(str(files[i]) + '\n')
+        for j in range(len(files[i]["files"])):
+            file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
+            num += 1
+
+    winnows = {}
+    for i in file_dic:
+        print(i)
+        winnows[file_dic[i]] = read_file(file_dic[i])
+
+    print(winnows)
+
 
     
+
+    
+
 
 
 if __name__ == "__main__":
