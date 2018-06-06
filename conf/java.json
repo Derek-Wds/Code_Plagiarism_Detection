@@ -6,7 +6,6 @@
     "int", "interface", "long", "native", "new", "out", "package", "private",
     "protected", "public", "return", "short", "static", "strictfp",
     "super", "switch", "synchronized", "this", "throw", "throws", "toString",
-    "transient", "try", "void", "volatile", "while"],
-    "comment":["//", "/*", "/**"]
+    "transient", "try", "void", "volatile", "while"]
 }
 

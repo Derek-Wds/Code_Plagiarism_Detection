@@ -1,6 +1,26 @@
 # -*- coding: utf-8 -*- 
 
 import os
+from utils import *
+
+def read_file(f):
+    f = open(f, encoding="utf8")
+    codes = f.readlines()
+    num = 0
+    while True:
+        try:
+            if "//" in codes[num]:
+                del codes[num]
+            else:
+                num += 1
+        except:
+            break
+    code = ''.join(codes)
+    test = polish(code)
+    w = winnow(test)
+    f.close()
+    return ''.join(test)
+
 
 def get_file(file_dir): 
     file_dic = {}

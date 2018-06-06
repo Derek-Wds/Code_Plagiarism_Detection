@@ -23,7 +23,7 @@ def winnowing_hash(kgram):
 
 def hashing(text):
     hs = hashlib.sha1(text.encode('utf-8'))
-    hs = hs.hexdigest()[-4:]
+    hs = hs.hexdigest()[-32:]
     hs = int(hs, 16)
     return hs
 

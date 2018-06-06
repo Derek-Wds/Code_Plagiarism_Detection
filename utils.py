@@ -4,11 +4,6 @@ import string
 import json
 from winnowing import winnow, select_min
 
-global class_name
-class_name = []
-global func_name
-func_name = []
-
 #delete punctuations
 def punc_del(code_list):
     temp = []
@@ -37,6 +32,8 @@ def punc_del(code_list):
 
 #change class name and function name
 def cf_change(code_list):
+    class_name = []
+    func_name = []
     for i in range(len(code_list)):
         # change class name
         if code_list[i] == "class" or code_list[i] == "extends":
@@ -59,20 +56,44 @@ def cf_change(code_list):
             name = ''.join(temp)
             if name not in func_name and name not in class_name:
                 func_name.append(''.join(temp))
-            code_list[i] = 'F'
-    return code_list
+        
+        if "." in code_list[i] and "(" in code_list[i]:
+            temp = []
+            pos = 0
+            while True:
+                if code_list[i][pos] != ".":
+                    pos += 1
+                else:
+                    pos += 1
+                    break
+            while code_list[i][pos] != "(":
+                temp.append(code_list[i][pos])
+                pos += 1
+                if pos == len(code_list[i]):
+                    break
+            name = ''.join(temp)
+            if name not in func_name and name not in class_name:
+                func_name.append(''.join(temp))
+                    
+    return code_list, class_name, func_name
 
 
 #change variable name and at the same time, change all the class name and function name
-def val_change(code_list):
+def val_change(code_list, class_name, func_name):
     with open('conf/java.json', 'r') as f:
         common = json.load(f)
+    for i in range(len(code_list)):
+        if "." not in code_list[i]:
+            if code_list[i] in func_name or code_list[i][1:] in func_name:
+                code_list[i] = "V"
     code_list = punc_del(code_list)
     for name in range(len(code_list)):
         if "exception" in code_list[name] or code_list[name] in common["code"]:
             continue
         elif code_list[name] in func_name:
             code_list[name] = "F"
+        elif code_list[name] in class_name:
+            code_list[name] = "C"
         else:
             if code_list[name].isdigit() or code_list[name].replace('.','',1).isdigit():
                 code_list[name] = "N"
@@ -82,15 +103,13 @@ def val_change(code_list):
 
 #delete comments
 def comment_del(code_list):
-    with open('conf/java.json', 'r') as f:
-        common = json.load(f)
     pos = 0
     while pos != len(code_list):
-        if code_list[pos] in common["comment"]:
+        if "/*" in code_list[pos] or "/**" in code_list[pos]:
             while "*/" not in code_list[pos] and "**/" not in code_list[pos]:
                 code_list[pos] = ''
                 pos += 1
-        elif "*/" in code_list[pos]or "**/" in code_list[pos]:
+        elif "*/" in code_list[pos] or "**/" in code_list[pos]:
             code_list[pos] = ''
             pos += 1
         else:
@@ -104,24 +123,7 @@ def comment_del(code_list):
 def polish(code):
     original_list = code.lower().split()
     del_com_list = comment_del(original_list)
-    cf_replace = cf_change(del_com_list)
-    result = val_change(cf_replace)
+    cf_replace, class_name, func_name = cf_change(del_com_list)
+    result = val_change(cf_replace, class_name, func_name)
     return result
 
-def read_file(f):
-    f = open(f, encoding="utf8")
-    codes = f.readlines()
-    num = 0
-    while True:
-        try:
-            if "//" in codes[num]:
-                del codes[num]
-            else:
-                num += 1
-        except:
-            break
-    code = ''.join(codes)
-    test = polish(code)
-    w = winnow(test)
-    f.close()
-    return w
