@@ -44,20 +44,21 @@ def main():
 
     # print("Similarity between two files are: ", resemblence(winnow1, winnow2, int((length1 + length2)/25)))
     
-    # file_dic = {}
-    # num = 1
-    # files = get_file("C:\\Users\\dingwang\\Desktop\\guava-master")
-    # for i in files:
-    #     for j in range(len(files[i]["files"])):
-    #         file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
-    #         num += 1
-    #
-    # winnows = {}
-    # for i in file_dic:
-    #     temp = [file_dic[i], read_file(file_dic[i])]
-    #     winnows[i] = temp
-    #     write_csv(temp)
-    #     print(i)
+    file_dic = {}
+    num = 1
+    files = get_file("C:\\Users\\dingwang\\Desktop\\guava-master")
+    for i in files:
+        for j in range(len(files[i]["files"])):
+            file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
+            num += 1
+            print(num)
+    
+    winnows = {}
+    for i in file_dic:
+        temp = [file_dic[i], read_file(file_dic[i])]
+        winnows[i] = temp
+        write_csv(temp)
+        print(i)
     
     # winnows = {}
     # num = 1
@@ -79,10 +80,11 @@ def main():
     # with open('result.json', 'w') as f:
     #     json.dump(results, f)
         
-    with open('result.json', 'r') as f:
-        a = json.load(f)
-    for i in a:
-        print(a[i])
+    # with open('result.json', 'r') as f:
+    #     a = json.load(f)
+    # for i in a:
+    #     print(a[i])
+
     # --> test = set(map(lambda x: x[1], a))
 
     # a = read_file("C:\\Users\\dingwang\\Desktop\\guava-master\\android\\guava\\src\\com\\google\\common\\base\\ExtraObjectsMethodsForWeb.java")

@@ -9,7 +9,7 @@ def read_file(f):
     num = 0
     while True:
         try:
-            if "//" in codes[num]:
+            if "//" in codes[num] or "@" in codes[num]:
                 del codes[num]
             else:
                 num += 1
@@ -33,7 +33,7 @@ def get_file(file_dir):
             pass
         elif ".xml" in str(files):
             pass
-        elif ".java" in str(files):
+        elif ".java" in str(files) or ".groovy" in str(files):
             if "test" in str(files) or "Test" in str(files) or "test" in str(root) or "Test" in str(root):
                 pass
             else:
