@@ -23,7 +23,7 @@ def winnowing_hash(kgram):
 
 def hashing(text):
     hs = hashlib.sha1(text.encode('utf-8'))
-    hs = hs.hexdigest()[-32:]
+    hs = hs.hexdigest()
     hs = int(hs, 16)
     return hs
 
@@ -38,3 +38,8 @@ def winnow(text, k=7):
     hashes = map(lambda x: winnowing_hash(x), kgrams(text, k))
     windows = kgrams(hashes, 5)
     return set(map(select_min, windows))
+
+# a = "abcdefghijklmnopqrstuvwxyz"
+# print(winnow(a))
+# print(kgrams(a, 7))
+# print(map(lambda x: winnowing_hash(x), kgrams(a, 7)))

@@ -9,24 +9,27 @@ def punc_del(code_list):
     temp = []
     flag = 0
     for i in code_list:
-        temp.append(' ')
-        for j in range(len(i)):
-            if flag == 1:
-                if i[j] == "'" or i[j] == '"':
-                    temp.append("V")
-                    flag = 0
-                continue
-            else:
-                if i[j] in string.punctuation:
-                    if i[j] == '_':
-                        temp.append('_')
-                    else:
-                        if i[j] == '"' or i[j] == "'":
-                            flag = 1
-                        else:
-                            temp.append(' ')
+        if "@" in code_list[i]:
+            temp.append('')
+        else:
+            temp.append(' ')
+            for j in range(len(i)):
+                if flag == 1:
+                    if i[j] == "'" or i[j] == '"':
+                        temp.append("V")
+                        flag = 0
+                    continue
                 else:
-                    temp.append(i[j])
+                    if i[j] in string.punctuation:
+                        if i[j] == '_':
+                            temp.append('_')
+                        else:
+                            if i[j] == '"' or i[j] == "'":
+                                flag = 1
+                            else:
+                                temp.append(' ')
+                    else:
+                        temp.append(i[j])
     code_list = (''.join(temp)).split()
     return code_list
 
