@@ -51,7 +51,6 @@ def main():
         for j in range(len(files[i]["files"])):
             file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
             num += 1
-            print(num)
     
     winnows = {}
     for i in file_dic:
@@ -60,30 +59,30 @@ def main():
         write_csv(temp)
         print(i)
     
-    # winnows = {}
-    # num = 1
-    # csv_reader = csv.reader(open('hash.csv', encoding='utf-8'))
-    # for row in csv_reader:
-    #     winnows[num] = [row[0], eval(row[1])]
-    #     num += 1
+    winnows = {}
+    num = 1
+    csv_reader = csv.reader(open('hash.csv', encoding='utf-8'))
+    for row in csv_reader:
+        winnows[num] = [row[0], eval(row[1])]
+        num += 1
 
-    # results = {}
-    # num = 1
-    # for i in range(1, len(winnows)):
-    #     for j in range(i + 1, len(winnows) + 1):
-    #         result = resemblence(winnows[i][1], winnows[j][1], 500)
-    #         if result > 0.8:
-    #             print(num)
-    #             results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
-    #             num += 1
+    results = {}
+    num = 1
+    for i in range(1, len(winnows)):
+        for j in range(i + 1, len(winnows) + 1):
+            result = resemblence(winnows[i][1], winnows[j][1], 500)
+            if result > 0.6:
+                print(num)
+                results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
+                num += 1
 
-    # with open('result.json', 'w') as f:
-    #     json.dump(results, f)
+    with open('result.json', 'w') as f:
+        json.dump(results, f)
         
-    # with open('result.json', 'r') as f:
-    #     a = json.load(f)
-    # for i in a:
-    #     print(a[i])
+    with open('result.json', 'r') as f:
+        a = json.load(f)
+    for i in a:
+        print(a[i])
 
     # --> test = set(map(lambda x: x[1], a))
 

@@ -9,7 +9,7 @@ def read_file(f):
     num = 0
     while True:
         try:
-            if "//" in codes[num] or "@" in codes[num]:
+            if "//" in codes[num]:
                 del codes[num]
             else:
                 num += 1
