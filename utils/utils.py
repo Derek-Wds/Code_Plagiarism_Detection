@@ -2,7 +2,19 @@
 
 import string
 import json
+import logging
 from winnowing import winnow, select_min
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s")
+
+file_handler = logging.FileHandler('winnow.log')
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 #delete punctuations
 def punc_del(code_list):
@@ -135,5 +147,6 @@ def comment_del(code_list):
 def polish(code):
     del_com_list = comment_del(code)
     cf_replace, class_name, func_name = cf_change(del_com_list)
+    logger.debug("".join(cf_replace))
     result = val_change(cf_replace, class_name, func_name)
     return result

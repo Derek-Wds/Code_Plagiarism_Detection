@@ -2,7 +2,19 @@
 
 import os
 import subprocess
-from utils import *
+import logging
+from utils.utils import *
+from utils.winnowing import *
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter("%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s: %(message)s")
+
+file_handler = logging.FileHandler('readfile.log')
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 def read_file(f):
     num = 0
@@ -13,6 +25,7 @@ def read_file(f):
     code = str(output).split("\\n")
     code[0] = code[0][2:]
     test = polish(code)
+    logger.debug("".join(test))
     w = winnow(test)
     return w
 
