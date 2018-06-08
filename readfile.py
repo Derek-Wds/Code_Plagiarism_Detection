@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*- 
 
 import os
+import subprocess
 from utils import *
 
 def read_file(f):
-    f = open(f, encoding="utf8")
-    codes = f.readlines()
     num = 0
-    while True:
-        try:
-            if "//" in codes[num]:
-                del codes[num]
-            else:
-                num += 1
-        except:
-            break
-    code = ''.join(codes)
+    # when use the command, one should change the path to file: google-java-format-1.6-all-deps.jar
+    cmdCommand = "java -jar C:\\Users\\dingwang\\Downloads\\google-java-format-1.6-all-deps.jar %s" % f
+    process = subprocess.Popen(cmdCommand.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    code = str(output).split("\\n")
+    code[0] = code[0][2:]
     test = polish(code)
     w = winnow(test)
-    f.close()
     return w
 
 
@@ -39,20 +34,10 @@ def get_file(file_dir):
             else:
                 for i in files:
                     f = open(root + "\\" + i, encoding="utf8")
-                    codes = f.readlines()
-                    while True:
-                        try:
-                            if "//" in codes[num]:
-                                del codes[num]
-                            else:
-                                num += 1
-                        except:
-                            break
-                    code = ''.join(codes)
-                    a = ''.join(comment_del(code.lower().split()))
+                    a = f.read()
                     if "interface" in a:
                         pass
-                    elif "abstractclass" in a and not "return" in a:
+                    elif "abstract class" in a and not "return" in a:
                         pass
                     elif "class" not in a:
                         pass

@@ -44,21 +44,22 @@ def main():
 
     # print("Similarity between two files are: ", resemblence(winnow1, winnow2, int((length1 + length2)/25)))
     
-    file_dic = {}
-    num = 1
-    files = get_file("C:\\Users\\dingwang\\Desktop\\guava-master")
-    for i in files:
-        for j in range(len(files[i]["files"])):
-            file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
-            num += 1
+    # file_dic = {}
+    # num = 1
+    # files = get_file("C:\\Users\\dingwang\\Desktop\\guava-master")
+    # for i in files:
+    #     for j in range(len(files[i]["files"])):
+    #         file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
+    #         num += 1
     
-    winnows = {}
-    for i in file_dic:
-        temp = [file_dic[i], read_file(file_dic[i])]
-        winnows[i] = temp
-        write_csv(temp)
-        print(i)
-    
+    # winnows = {}
+    # for i in file_dic:
+    #     temp = [file_dic[i], read_file(file_dic[i])]
+    #     # print(read_file(file_dic[i]))
+    #     winnows[i] = temp
+    #     write_csv(temp)
+    #     print(i)
+
     winnows = {}
     num = 1
     csv_reader = csv.reader(open('hash.csv', encoding='utf-8'))
@@ -83,18 +84,6 @@ def main():
         a = json.load(f)
     for i in a:
         print(a[i])
-
-    # --> test = set(map(lambda x: x[1], a))
-
-    # a = read_file("C:\\Users\\dingwang\\Desktop\\guava-master\\android\\guava\\src\\com\\google\\common\\base\\ExtraObjectsMethodsForWeb.java")
-    # b = read_file("C:\\Users\\dingwang\\Desktop\\guava-master\\android\\guava\\src\\com\\google\\common\\collect\\ForwardingImmutableList.java")
-
-    # print(len(a))
-    # print(a)
-    # print(len(b))
-    # print(b)
-    # print(len(a.intersection(b)))
-    # print(resemblence(a, b, 500))
 
 if __name__ == "__main__":
     csv.field_size_limit(sys.maxsize)

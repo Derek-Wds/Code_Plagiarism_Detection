@@ -107,26 +107,33 @@ def val_change(code_list, class_name, func_name):
 #delete comments
 def comment_del(code_list):
     pos = 0
-    while pos != len(code_list):
-        if "/*" in code_list[pos] or "/**" in code_list[pos]:
-            while "*/" not in code_list[pos] and "**/" not in code_list[pos]:
+    run = True
+    while run:
+        if "/*" in code_list[pos]:
+            while True:
+                if "*/" in code_list[pos]:
+                    code_list[pos] = ""
+                    pos += 1
+                    break
                 code_list[pos] = ''
                 pos += 1
-        elif "*/" in code_list[pos] or "**/" in code_list[pos]:
-            code_list[pos] = ''
-            pos += 1
         else:
+            if "//" in code_list[pos]:
+                num = code_list[pos].index("//")
+                code_list[pos] = code_list[pos][:num]
             pos += 1
-    return code_list
+        if pos == len(code_list):
+            run = False
+            break    
+        code_list[pos] += " "
+    return ''.join(code_list).split()
 
 
 # ---------------------break line-------------------------
 
 #main function
 def polish(code):
-    original_list = code.lower().split()
-    del_com_list = comment_del(original_list)
+    del_com_list = comment_del(code)
     cf_replace, class_name, func_name = cf_change(del_com_list)
     result = val_change(cf_replace, class_name, func_name)
     return result
-

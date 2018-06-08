@@ -1,3 +1,5 @@
+#one should download the google-java-format from: https://github.com/google/google-java-format in order to run this project, also, make sure java environment is already install on your computer and can run properly.
+
 numpy
 matplotlib
 elasticsearch
