@@ -1,18 +1,15 @@
-<<<<<<< HEAD
 from utils.utils import polish
 from utils.winnowing import winnow, select_min
 from utils.resemblence import resemblence
 from utils.writecsv import write_csv
 from utils.readfile import get_file, read_file
 import csv, json, sys, logging
-=======
 from utils import polish
 from winnowing import winnow, select_min
 from resemblence import resemblence
 from writecsv import write_csv
 from readfile import get_file, read_file
 import csv, json, sys
->>>>>>> parent of 370108c... add log
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -69,7 +66,6 @@ def main():
     #     write_csv(temp)
     #     print(i)
 
-<<<<<<< HEAD
     # winnows = {}
     # num = 1
     # csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
@@ -89,7 +85,6 @@ def main():
 
     # with open('data\\result.json', 'w') as f:
     #     json.dump(results, f)
-=======
     winnows = {}
     num = 1
     csv_reader = csv.reader(open('hash.csv', encoding='utf-8'))
@@ -109,7 +104,6 @@ def main():
 
     with open('result.json', 'w') as f:
         json.dump(results, f)
->>>>>>> parent of 370108c... add log
         
     with open('data\\result.json', 'r') as f:
         a = json.load(f)
