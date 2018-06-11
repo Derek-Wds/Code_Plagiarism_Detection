@@ -3,10 +3,13 @@ from utils.winnowing import winnow, select_min
 from utils.resemblence import resemblence
 from utils.writecsv import write_csv
 from utils.readfile import get_file, read_file
+from utils.elastic_search import search
+from pprint import pprint
 import csv, json, sys, logging
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -17,6 +20,7 @@ file_handler = logging.FileHandler('main.log')
 file_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
+
 
 def main():
     # file1 = open('codes/data1.java','r')
@@ -92,9 +96,9 @@ def main():
     
     with open('data\\result.json', 'r') as f:
         a = json.load(f)
-        
+
     for i in a:
-        print(a[i])
+        pprint(a[i])
 
 if __name__ == "__main__":
     csv.field_size_limit(sys.maxsize)
