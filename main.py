@@ -79,7 +79,7 @@ def main():
     csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
     for row in csv_reader:
         winnows[num] = [row[0], eval(row[1])]
-        insert([num, row[0], row[1]])
+        # insert([num, row[0], row[1]])
         num += 1
 
     # results = {}
