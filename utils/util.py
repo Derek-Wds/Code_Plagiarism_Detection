@@ -3,7 +3,7 @@
 import string
 import json
 import logging
-from winnowing import winnow, select_min
+from utils.winnowing import winnow, select_min
 
 
 logger = logging.getLogger(__name__)

@@ -3,7 +3,7 @@
 import os
 import subprocess
 import logging
-from utils.utils import *
+from utils.util import *
 from utils.winnowing import *
 
 logger = logging.getLogger(__name__)
