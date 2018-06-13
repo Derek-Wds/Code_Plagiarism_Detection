@@ -46,8 +46,8 @@ def punc_del(code_list):
     return code_list
 
 #change class name and function name
-def cf_change(code_list):
-    class_name = []
+def cf_change(code_list, cn):
+    class_name = cn
     func_name = []
     for i in range(len(code_list)):
         # change class name
@@ -73,22 +73,29 @@ def cf_change(code_list):
                 func_name.append(''.join(temp))
         
         if "." in code_list[i] and "(" in code_list[i]:
-            temp = []
             pos = 0
-            while True:
-                if code_list[i][pos] != ".":
-                    pos += 1
+            while "." in code_list[i][pos:] and "(" in code_list[i][pos:]:
+                temp = []
+                while True:
+                    if code_list[i][pos] != ".":
+                        pos += 1
+                    else:
+                        pos += 1
+                        break
+                if pos >= len(code_list[i]):
+                    break
                 else:
-                    pos += 1
-                    break
-            while code_list[i][pos] != "(":
-                temp.append(code_list[i][pos])
-                pos += 1
-                if pos == len(code_list[i]):
-                    break
-            name = ''.join(temp)
-            if name not in func_name and name not in class_name:
-                func_name.append(''.join(temp))
+                    while code_list[i][pos] != "(":
+                        if pos + 1 == len(code_list[i]):
+                            break
+                        if code_list[i][pos] not in string.punctuation:
+                            temp.append(code_list[i][pos])
+                            pos += 1
+                        else:
+                            break
+                name = ''.join(temp)
+                if name not in func_name and name not in class_name:
+                    func_name.append(''.join(temp))
                     
     return code_list, class_name, func_name
 
@@ -105,10 +112,10 @@ def val_change(code_list, class_name, func_name):
     for name in range(len(code_list)):
         if "exception" in code_list[name] or code_list[name] in common["code"]:
             continue
-        elif code_list[name] in func_name:
-            code_list[name] = "F"
         elif code_list[name] in class_name:
             code_list[name] = "C"
+        elif code_list[name] in func_name:
+            code_list[name] = "F"
         else:
             if code_list[name].isdigit() or code_list[name].replace('.','',1).isdigit():
                 code_list[name] = "N"
@@ -119,15 +126,18 @@ def val_change(code_list, class_name, func_name):
 #delete comments
 def comment_del(code_list):
     pos = 0
+    cn = []
     run = True
     while run:
-        if "/*" in code_list[pos]:
+        if "import" in code_list[pos] and "static" not in code_list[pos]:
+            cn.append(code_list[pos].split(".")[-1][:-2])
+        if "/*" in code_list[pos] and '/*"' not in code_list[pos]:
             while True:
                 if "*/" in code_list[pos]:
                     code_list[pos] = ""
                     pos += 1
                     break
-                code_list[pos] = ''
+                code_list[pos] = ""
                 pos += 1
         else:
             if "//" in code_list[pos]:
@@ -136,17 +146,17 @@ def comment_del(code_list):
             pos += 1
         if pos == len(code_list):
             run = False
-            break    
+            break
         code_list[pos] += " "
-    return ''.join(code_list).split()
+    return ''.join(code_list).split(), cn
 
 
 # ---------------------break line-------------------------
 
 #main function
 def polish(code):
-    del_com_list = comment_del(code)
-    cf_replace, class_name, func_name = cf_change(del_com_list)
+    del_com_list, cn = comment_del(code)
+    cf_replace, class_name, func_name = cf_change(del_com_list, cn)
     logger.debug("".join(cf_replace))
     result = val_change(cf_replace, class_name, func_name)
     return result
