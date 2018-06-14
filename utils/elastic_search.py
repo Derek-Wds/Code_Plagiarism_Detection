@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from pprint import pprint
 
-es = Elasticsearch(["icam-prod-ms-20:9200"])
+es = Elasticsearch([""])
 index_name = ["codes"]
 s = Search(using = es, index = index_name)
 

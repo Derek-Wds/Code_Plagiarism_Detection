@@ -74,27 +74,27 @@ def main():
     #     write_csv(temp)
     #     print(i)
 
-    winnows = {}
-    num = 1
-    csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
-    for row in csv_reader:
-        winnows[num] = [row[0], eval(row[1])]
-        # insert([num, row[0], row[1]])
-        num += 1
+    # winnows = {}
+    # num = 1
+    # csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
+    # for row in csv_reader:
+    #     winnows[num] = [row[0], eval(row[1])]
+    #     # insert([num, row[0], row[1]])
+    #     num += 1
 
-    results = {}
-    num = 1
-    for i in range(1, len(winnows)):
-        for j in range(i + 1, len(winnows) + 1):
-            result = resemblence(winnows[i][1], winnows[j][1], 500)
-            logger.info([i, j, winnows[i][0], winnows[j][0], result])
-            if result > 0.8:
-                results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
-                print(num)
-                num += 1
+    # results = {}
+    # num = 1
+    # for i in range(1, len(winnows)):
+    #     for j in range(i + 1, len(winnows) + 1):
+    #         result = resemblence(winnows[i][1], winnows[j][1], 500)
+    #         logger.info([i, j, winnows[i][0], winnows[j][0], result])
+    #         if result > 0.8:
+    #             results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
+    #             print(num)
+    #             num += 1
 
-    with open('data\\result.json', 'w') as f:
-        json.dump(results, f)
+    # with open('data\\result.json', 'w') as f:
+    #     json.dump(results, f)
     
     with open('data\\result.json', 'r') as f:
         a = json.load(f)
