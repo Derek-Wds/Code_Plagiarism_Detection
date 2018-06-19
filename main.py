@@ -3,7 +3,7 @@ from utils.winnowing import winnow, select_min
 from utils.resemblence import resemblence
 from utils.writecsv import write_csv
 from utils.readfile import get_file, read_file
-# from utils.elastic_search import search, insert
+from utils.elastic_search import search, insert
 from pprint import pprint
 import csv, json, sys, logging
 import numpy as np
@@ -74,27 +74,34 @@ def main():
     #     write_csv(temp)
     #     print(i)
 
-    # winnows = {}
-    # num = 1
-    # csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
-    # for row in csv_reader:
-    #     winnows[num] = [row[0], eval(row[1])]
-    #     # insert([num, row[0], row[1]])
-    #     num += 1
+    winnows = {}
+    num = 1
+    csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
+    for row in csv_reader:
+        winnows[num] = [row[0], eval(row[1])]
+        a = sorted(eval(row[1]))
+        w = {}
+        for i in a:
+            w[i[0]] = i[1]
+        insert([num, row[0], w])
+        print(num)
+        num += 1
 
-    # results = {}
-    # num = 1
-    # for i in range(1, len(winnows)):
-    #     for j in range(i + 1, len(winnows) + 1):
-    #         result = resemblence(winnows[i][1], winnows[j][1], 500)
-    #         logger.info([i, j, winnows[i][0], winnows[j][0], result])
-    #         if result > 0.8:
-    #             results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
-    #             print(num)
-    #             num += 1
 
-    # with open('data\\result.json', 'w') as f:
-    #     json.dump(results, f)
+# O(n^2) time complexity
+    results = {}
+    num = 1
+    for i in range(1, len(winnows)):
+        for j in range(i + 1, len(winnows) + 1):
+            result = resemblence(winnows[i][1], winnows[j][1], 500)
+            logger.info([i, j, winnows[i][0], winnows[j][0], result])
+            if result > 0.8:
+                results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
+                print(num)
+                num += 1
+
+    with open('data\\result.json', 'w') as f:
+        json.dump(results, f)
     
     with open('data\\result.json', 'r') as f:
         a = json.load(f)
@@ -102,6 +109,26 @@ def main():
     for i in a:
         pprint(a[i])
 
+
+# improvement
+
+
+
+
+
+
 if __name__ == "__main__":
-    csv.field_size_limit(sys.maxsize)
+    # csv.field_size_limit(sys.maxsize)
+    maxInt = sys.maxsize
+    decrement = True
+
+    while decrement:
+        # decrease the maxInt value by factor 10 
+        # as long as the OverflowError occurs.
+        decrement = False
+        try:
+            csv.field_size_limit(maxInt)
+        except OverflowError:
+            maxInt = int(maxInt/10)
+            decrement = True
     main()
