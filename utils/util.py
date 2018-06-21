@@ -160,3 +160,23 @@ def polish(code):
     logger.debug("".join(cf_replace))
     result = val_change(cf_replace, class_name, func_name)
     return result
+
+
+# ---------------------break line-------------------------
+
+#function to calculate the depth of the file, now only for .java file
+def depth_cal(codes):
+    del_com_list, cn = comment_del(codes)
+    code = ''.join(del_com_list)
+    bracket = 0
+    depth = 0
+    for char in code:
+        if char == "{":
+            bracket += 1
+        elif char == "}":
+            bracket -= 1
+        else:
+            pass
+        if bracket > depth:
+            depth = bracket
+    return depth

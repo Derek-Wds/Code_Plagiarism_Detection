@@ -24,10 +24,14 @@ def read_file(f):
     output, error = process.communicate()
     code = str(output).split("\\n")
     code[0] = code[0][2:]
-    test = polish(code)
-    logger.debug("".join(test))
-    w = winnow(test)
-    return w
+    depth = depth_cal(code)
+    if depth < 5:
+        return 0
+    else:
+        test = polish(code)
+        logger.debug("".join(test))
+        w = winnow(test)
+        return w
 
 
 def get_file(file_dir): 

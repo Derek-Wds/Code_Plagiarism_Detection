@@ -66,13 +66,16 @@ def main():
     #         file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
     #         num += 1
     
-    # winnows = {}
-    # for i in file_dic:
-    #     temp = [file_dic[i], read_file(file_dic[i])]
-    #     # print(read_file(file_dic[i]))
-    #     winnows[i] = temp
-    #     write_csv(temp, 'data\\hash.csv')
-    #     print(i)
+    winnows = {}
+    for i in file_dic:
+        if read_file(file_dic[i]) == 0:
+            pass
+        else:
+            temp = [file_dic[i], read_file(file_dic[i])]
+            # print(read_file(file_dic[i]))
+            winnows[i] = temp
+            write_csv(temp, 'data\\hash.csv')
+            print(i)
 
 #     winnows = {}
 #     num = 1
