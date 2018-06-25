@@ -37,7 +37,8 @@ def winnow(text, k=7):
     text = zip(range(n), text)
     hashes = map(lambda x: winnowing_hash(x), kgrams(text, k))
     windows = kgrams(hashes, 5)
-    return set(map(select_min, windows))
+    # return set(map(select_min, windows))
+    return list(windows)
 
 # a = "abcdefghijklmnopqrstuvwxyz"
 # print(winnow(a))

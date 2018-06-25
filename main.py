@@ -58,37 +58,37 @@ def main():
 
     # print("Similarity between two files are: ", resemblence(winnow1, winnow2, int((length1 + length2)/25)))
     
-    file_dic = {}
-    num = 1
-    files = get_file("C:\\Users\\dingwang\\Desktop\\elasticsearch-master")
-    for i in files:
-        for j in range(len(files[i]["files"])):
-            file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
-            num += 1
+    # file_dic = {}
+    # num = 1
+    # files = get_file("C:\\Users\\dingwang\\Desktop\\elasticsearch-master")
+    # for i in files:
+    #     for j in range(len(files[i]["files"])):
+    #         file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
+    #         num += 1
     
-    winnows = {}
-    for i in file_dic:
-        if read_file(file_dic[i]) == 0:
-            pass
-        else:
-            temp = [file_dic[i], read_file(file_dic[i])]
-            # print(read_file(file_dic[i]))
-            winnows[i] = temp
-            write_csv(temp, 'data\\hash.csv')
-            print(i)
+    # winnows = {}
+    # for i in file_dic:
+    #     if read_file(file_dic[i]) == 0:
+    #         pass
+    #     else:
+    #         temp = [file_dic[i], read_file(file_dic[i])]
+    #         # print(read_file(file_dic[i]))
+    #         winnows[i] = temp
+    #         write_csv(temp, 'data\\hash.csv')
+    #         print(i)
 
-    winnows = {}
-    num = 1
-    csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
-    for row in csv_reader:
-        winnows[num] = [row[0], eval(row[1])]
-        a = sorted(eval(row[1]))
-        w = {}
-        for i in a:
-            w[i[0]] = i[1]
-        insert([num, row[0], w])
-        print(num)
-        num += 1
+    # winnows = {}
+    # num = 1
+    # csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
+    # for row in csv_reader:
+    #     winnows[num] = [row[0], eval(row[1])]
+    #     a = sorted(eval(row[1]))
+    #     w = {}
+    #     for i in a:
+    #         w[i[0]] = i[1]
+    #     insert([num, row[0], w])
+    #     print(num)
+    #     num += 1
 
 
 # # O(n^2) time complexity
@@ -106,16 +106,24 @@ def main():
 #     with open('data\\result.json', 'w') as f:
 #         json.dump(results, f)
     
-#     with open('data\\result.json', 'r') as f:
-#         a = json.load(f)
+    with open('data\\result.json', 'r') as f:
+        a = json.load(f)
 
-#     for i in a:
-#         pprint(a[i])
+    for i in a:
+        pprint(a[i])
 
 
-# improvement
-    
-
+# # improvement
+#     r = {}
+#     f = open('data\\result.json', 'w')
+#     num = 1
+#     csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
+#     for row in csv_reader:
+#         print(num)
+#         r[num] = search([row[0], row[1]])
+#         num += 1
+#     json.dump(r, f)
+#     f.close()
 
 
 if __name__ == "__main__":
