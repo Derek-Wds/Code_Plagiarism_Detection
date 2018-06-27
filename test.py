@@ -147,5 +147,5 @@ for i in file_dic:
         		result.append(str(w[h][0][1]))
         fingerprint = ' '.join(result)
         winnows[i] = fingerprint
-        write_csv([fingerprint], 'data\\test.csv')
+        write_csv([file_dic[i], fingerprint], 'data\\test.csv')
         print(i)

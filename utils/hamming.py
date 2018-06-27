@@ -82,20 +82,22 @@ def range_int(aint, bit_count):
     return (bits_to_int(low), bits_to_int(high))
 
 
-def gen_perm(es, indoc='simhash123'):
+def gen_perm(es, indoc='simhashes'):
     result = es.search(index=indoc, doc_type=indoc, body={"query": {"match_all": {}}}, scroll='1m')
     while result and result['hits']['hits']:
         for r in result['hits']['hits']:
             xid = r['_id']
+            file = r['_source']['file']
             logging.info("gen permutations for {}".format(xid))
             hashval = r['_source']['hashval']
             ints = [i for i,j in permute_int(hashval)]
             names = ["perm" + str(i) for i in range(0, len(ints))]
             name_int = {n:i for (n,i) in zip(names, ints)}
+            name_int['file'] = file
             try:
                 es.update(index=indoc, doc_type=indoc, id=xid, body={"doc":name_int})
             except Exception as e:
-                logging.error(e.info)
+                logging.error(e)
         result = es.scroll(result['_scroll_id'], scroll='1m')
         #result = None
 
@@ -121,7 +123,7 @@ def query_distance_3(es, oid, key, val, low, high, indoc='simhash'):
         result = es.scroll(result['_scroll_id'], scroll='1m')
 
 
-def query_perm(es, indoc='simhash'):
+def query_perm(es, indoc='simhashes'):
     try:
         result = es.search(index=indoc, doc_type=indoc, body={"query": {"match_all": {}}}, scroll='1m')
         counts = [j for i,j in permutes(64)]
@@ -159,7 +161,20 @@ if __name__ == '__main__':
     #print(x[0])
     # print(x[1])
     logging.basicConfig(filename="permute.log", level=logging.INFO)
-    es = Elasticsearch()
-    logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level
-    query_perm(es, 'simhash123')
+    es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
+    gen_perm(es)
+    # logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level
+    # query_perm(es, 'simhashes')
 
+    # print(permute_int(15517852168334194449))
+    # print(int_to_bits(15517852168334194449))
+    # print(bin(15517852168334194449)[2:])
+    # print(bits_to_int("1101011101011010011111000101010001111010100101011011011100010001"))
+    # print(int("1101011101011010011111000101010001111010100101011011011100010001",2))
+    # print(np.uint64(int("1101011101011010011111000101010001111010100101011011011100010001",2)))
+    # print(np.int64(np.uint64(int("1101011101011010011111000101010001111010100101011011011100010001",2))))
+    # ints = [i for i,j in permute_int(15517852168334194449)]
+    # names = ["perm" + str(i) for i in range(0, len(ints))]
+    # name_int = {n:str(i) for (n,i) in zip(names, ints)}
+
+    # print(name_int)
