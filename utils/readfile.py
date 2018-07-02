@@ -28,14 +28,14 @@ def read_file(f):
     test = polish(code)
     logger.debug("".join(test))
     w = winnow(test)
-    return w
-    # if depth < 5:
-    #     return 0
-    # else:
-    #     test = polish(code)
-    #     logger.debug("".join(test))
-    #     w = winnow(test)
-    #     return w
+    # return w, depth
+    if depth < 5:
+        return 0
+    else:
+        test = polish(code)
+        logger.debug("".join(test))
+        w = winnow(test)
+        return w
 
 
 def get_file(file_dir): 

@@ -98,7 +98,7 @@ def gen_perm(es, indoc='simhashes'):
                 es.update(index=indoc, doc_type=indoc, id=xid, body={"doc":name_int})
             except Exception as e:
                 logging.error(e)
-        result = es.scroll(result['_scroll_id'], scroll='1m')
+        result = es.scroll(result['_scroll_id'], scroll='6m')
         #result = None
 
 
@@ -114,37 +114,57 @@ def query_distance_3(es, oid, key, val, low, high, indoc='simhash'):
                                                   "lte": high,
                                                   "boost": 2.0}}}},
                        scroll='1m')
+    match = []
     while result and result['hits']['hits']:
         for doc in result['hits']['hits']:
             xid = doc['_id']
             hashval = doc['_source'].get(key)
-            if distance(hashval, val) <= 3 and oid != xid:
+            file = doc['_source']['file']
+            if distance(hashval, val) <= 0 and oid != xid:
                 logging.info("{} matches {}".format(oid, xid))
-        result = es.scroll(result['_scroll_id'], scroll='1m')
+                if file in match:
+                    pass
+                else:
+                    match.append(file)
+        result = es.scroll(result['_scroll_id'], scroll='6m')
+    return match
 
 
 def query_perm(es, indoc='simhashes'):
     try:
         result = es.search(index=indoc, doc_type=indoc, body={"query": {"match_all": {}}}, scroll='1m')
         counts = [j for i,j in permutes(64)]
+        res = {}
+        num = 1
+        count = 5
         while result and result['hits']['hits']:
             for doc in result['hits']['hits']:
                 xid = doc['_id']
+                file = doc['_source']['file']
                 logging.info("looking at {}".format(xid))
                 for i in range(20):
                     k = "perm" + str(i)
                     v = doc['_source'].get(k)
                     int_range = range_int(v, counts[i])
                     try:
-                        query_distance_3(es, xid, k, v, int_range[0], int_range[1], indoc)
+                        match = query_distance_3(es, xid, k, v, int_range[0], int_range[1], indoc)
+                        # res[num] = {doc['_source']['file']: match}
                     except Exception as e:
                         logging.error(e)
-            while True:
+                num += 1
+            while count > 0:
                 try:
-                    result = es.scroll(result['_scroll_id'], scroll="1m")
+                    result = es.scroll(result['_scroll_id'], scroll="6m")
+                    count = 5
                     break
                 except Exception as e:
                     logging.error(e)
+                    count -= 1
+            if count == 0:
+                logging.critical("es scroll failed")
+                exit(1)
+        # with open('data\\simhash.json', 'w') as f:
+        #     json.dump(res, f)
     except Exception:
         logging.critical("es search failed")
         exit(1)
@@ -162,9 +182,9 @@ if __name__ == '__main__':
     # print(x[1])
     logging.basicConfig(filename="permute.log", level=logging.INFO)
     es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
-    gen_perm(es)
-    # logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level
-    # query_perm(es, 'simhashes')
+    # gen_perm(es)
+    logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level
+    query_perm(es, 'simhashes')
 
     # print(permute_int(15517852168334194449))
     # print(int_to_bits(15517852168334194449))

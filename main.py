@@ -28,18 +28,44 @@ es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
 
 def main():
     
-# # improvemed
-    num = 0
-    csv_reader = csv.reader(open('data\\test.csv', encoding='utf-8'))
-    for row in csv_reader:
-        print(num)
-        write_csv([row[0], calculate_simhash(row[1])], 'data\\simhash.csv')
-        num += 1
-    csv_reader = csv.reader(open('data\\simhash.csv', encoding='utf-8'))
+# # improvement 1   
+#     results = {}
+#     num = 1
+#     csv_reader = csv.reader(open('data\\hash.csv', encoding='utf-8'))
+#     for row in csv_reader:
+#         print(num)
+#         results[num] = search(row)
+#         num += 1
+#     with open('data\\result.json', 'w') as f:
+#         json.dump(results, f)
+
+#     res = []
+#     with open('data\\result.json', 'r') as f:
+#         a = json.load(f)
+#         for i in a:
+#             if len(list(a[i].values())[0]) > 1:
+#                 res.append(i)
+#     print(res) # ['47', '50', '55', '56', '103', '106', '153', '155', '576', '583', '815', '816', '1202', '1206', '1207', '1208', '1334', '1336', '1337']
+
+
+# improvement 2
     id = 1
-    for row in csv_reader:
+    csv_reader1 = csv.reader(open('data\\test.csv', encoding='utf-8'))
+    with open('data\\result2.json', 'r') as f:
+        dic = json.load(fp=f)
+    for row in csv_reader1:
         print(id)
-        es.index(index = "simhashes", doc_type = "simhashes", body = {"hashval": eval(row[1]), "file": row[0]}, id = id)
+        ws = row[1].split()
+        temp = []
+        for w in ws:
+            if dic[w][1] > 50:
+                pass
+            else:
+                temp.append(w)
+
+        fingerprint = calculate_simhash(' '.join(temp))
+        write_csv([row[0], fingerprint], 'data\\simhash.csv')
+        es.index(index = "simhashes", doc_type = "simhashes", body = {"hashval": fingerprint, "file": row[0]}, id = id)
         id += 1
  
 # TODO: a better hash function
@@ -52,12 +78,10 @@ def _hash(x):
 def calculate_simhash(weighted_features, f=64):
     v = [0] * f
     masks = [1 << i for i in range(f)]
-    weight = 0
+    weight = 1
     features = weighted_features.split()
-    length = len(features)
     for feature in features:
         h = _hash(feature)
-        weight = weighted_features.count(feature) / length
         for i in range(f):
             v[i] = v[i] + weight if h & masks[i] else v[i] - weight
     value = 0
@@ -105,24 +129,24 @@ def test1():
 
 
 def test2():
-    file_dic = {}
-    num = 1
-    files = get_file("C:\\Users\\dingwang\\Desktop\\elasticsearch-master")
-    for i in files:
-        for j in range(len(files[i]["files"])):
-            file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
-            num += 1
+    # file_dic = {}
+    # num = 1
+    # files = get_file("C:\\Users\\dingwang\\Desktop\\elasticsearch-master")
+    # for i in files:
+    #     for j in range(len(files[i]["files"])):
+    #         file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
+    #         num += 1
     
-    winnows = {}
-    for i in file_dic:
-        if read_file(file_dic[i]) == 0:
-            pass
-        else:
-            temp = [file_dic[i], read_file(file_dic[i])]
-            # print(read_file(file_dic[i]))
-            winnows[i] = temp
-            write_csv(temp, 'data\\hash.csv')
-            print(i)
+    # winnows = {}
+    # for i in file_dic:
+    #     if read_file(file_dic[i]) == 0:
+    #         pass
+    #     else:
+    #         temp = [file_dic[i], read_file(file_dic[i])]
+    #         # print(read_file(file_dic[i]))
+    #         winnows[i] = temp
+    #         write_csv(temp, 'data\\hash.csv')
+    #         print(i)
 
     winnows = {}
     num = 1
@@ -136,28 +160,29 @@ def test2():
         insert([num, row[0], w])
         print(num)
         num += 1
+    #     num += 1
 
 
-# O(n^2) time complexity
-    results = {}
-    num = 1
-    for i in range(1, len(winnows)):
-        for j in range(i + 1, len(winnows) + 1):
-            result = resemblence(winnows[i][1], winnows[j][1], 500)
-            logger.info([i, j, winnows[i][0], winnows[j][0], result])
-            if result > 0.8:
-                results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
-                print(num)
-                num += 1
+# # O(n^2) time complexity
+#     results = {}
+#     num = 1
+#     for i in range(1, len(winnows)):
+#         for j in range(i + 1, len(winnows) + 1):
+#             result = resemblence(winnows[i][1], winnows[j][1], 500)
+#             logger.info([i, j, winnows[i][0], winnows[j][0], result])
+#             if result > 0.8:
+#                 results[num] =  [i, j, winnows[i][0], winnows[j][0], result]
+#                 print(num)
+#                 num += 1
 
-    with open('data\\result.json', 'w') as f:
-        json.dump(results, f)
+#     with open('data\\result.json', 'w') as f:
+#         json.dump(results, f)
     
-    with open('data\\result.json', 'r') as f:
-        a = json.load(f)
+#     with open('data\\result.json', 'r') as f:
+#         a = json.load(f)
 
-    for i in a:
-        pprint(a[i])
+#     for i in a:
+#         pprint(a[i])
 
 
 
