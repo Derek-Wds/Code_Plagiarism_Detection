@@ -120,7 +120,7 @@ def query_distance_3(es, oid, key, val, low, high, indoc='simhash'):
             xid = doc['_id']
             hashval = doc['_source'].get(key)
             file = doc['_source']['file']
-            if distance(hashval, val) <= 0 and oid != xid:
+            if distance(hashval, val) <= 3 and oid != xid:
                 logging.info("{} matches {}".format(oid, xid))
                 if file in match:
                     pass
@@ -180,7 +180,7 @@ if __name__ == '__main__':
     # x = range_int(7135637346109630000, 31)
     #print(x[0])
     # print(x[1])
-    logging.basicConfig(filename="permute.log", level=logging.INFO)
+    logging.basicConfig(filename="permute2.log", level=logging.INFO)
     es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
     # gen_perm(es)
     logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level

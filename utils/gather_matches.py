@@ -93,7 +93,7 @@ if __name__ == '__main__':
     #             parse_match_block(match_block)
 
     result = {}
-    f = open("permute.log", "r")
+    f = open("permute1.log", "r")
     for row in f.readlines():
         row = row.strip()
         if "matches" in row:

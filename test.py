@@ -122,33 +122,34 @@ while decrement:
 # print(fingerprint)
 
 
-# file_dic = {}
-# num = 1
-# files = get_file("C:\\Users\\dingwang\\Desktop\\elasticsearch-master")
-# for i in files:
-#     for j in range(len(files[i]["files"])):
-#         file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
-#         num += 1
+file_dic = {}
+num = 1
+files = get_file("C:\\Users\\dingwang\\Desktop\\elasticsearch-master")
+for i in files:
+    for j in range(len(files[i]["files"])):
+        file_dic[num] = str(files[i]["root"] + "\\" + files[i]["files"][j])
+        num += 1
 
-# winnows = {}
-# for i in file_dic:
-#     if read_file(file_dic[i]) == 0:
-#         pass
-#     else:
-#         # temp = [file_dic[i], read_file(file_dic[i])]
-#         # print(read_file(file_dic[i]))
-#         result = []
-#         w = read_file(file_dic[i])
-#         for h in range(len(w)):
-#         	if h == len(w) - 1:
-#         		for j in w[h]:
-#         			result.append(str(j[1]))
-#         	else:
-#         		result.append(str(w[h][0][1]))
-#         fingerprint = ' '.join(result)
-#         winnows[i] = fingerprint
-#         write_csv([file_dic[i], fingerprint], 'data\\test.csv')
-#         print(i)
+winnows = {}
+for i in file_dic:
+    if read_file(file_dic[i]) == 0:
+        pass
+    else:
+        # temp = [file_dic[i], read_file(file_dic[i])]
+        # print(read_file(file_dic[i]))
+        result = []
+        w = read_file(file_dic[i])
+        for h in range(len(w)):
+        	if h == len(w) - 1:
+        		for j in w[h]:
+        			result.append(str(j[1]))
+        	else:
+        		result.append(str(w[h][0][1]))
+        fingerprint = ' '.join(result)
+        winnows[i] = fingerprint
+        write_csv([file_dic[i], fingerprint], 'data\\test.csv')
+        print(i)
+
 
 w = []
 ws = {}
@@ -174,9 +175,11 @@ print()
 print(len(w))
 print(len(set(w)))
 
+
 # pprint(ws)
 
 # with open('data\\result2.json', 'w') as f:
 #         json.dump(ws, f)
+
 
 pprint(sorted(ws.items(), key = lambda item: item[1][1]))

@@ -22,7 +22,7 @@ def read_file(f):
     cmdCommand = "java -jar C:\\Users\\dingwang\\Downloads\\google-java-format-1.6-all-deps.jar %s" % f
     process = subprocess.Popen(cmdCommand.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
-    code = str(output).split("\\n")
+    code = str(output).split("\n")
     code[0] = code[0][2:]
     depth = depth_cal(code)
     test = polish(code)
