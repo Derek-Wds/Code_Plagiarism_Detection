@@ -67,7 +67,7 @@ def main():
         write_csv([row[0], fingerprint], 'data\\simhash.csv')
         es.index(index = "simhashes", doc_type = "simhashes", body = {"hashval": fingerprint, "file": row[0]}, id = id)
         id += 1
- 
+
 # TODO: a better hash function
 # this one returns 128 bit int, more than 64.
 def _hash(x):

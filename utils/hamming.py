@@ -82,8 +82,8 @@ def range_int(aint, bit_count):
     return (bits_to_int(low), bits_to_int(high))
 
 
-def gen_perm(es, indoc='simhashes'):
-    result = es.search(index=indoc, doc_type=indoc, body={"query": {"match_all": {}}}, scroll='1m')
+def gen_perm(es, indoc='git_simhashes'):
+    result = es.search(index=indoc, doc_type="simhashes", body={"query": {"match_all": {}}}, scroll='1m')
     while result and result['hits']['hits']:
         for r in result['hits']['hits']:
             xid = r['_id']
@@ -95,7 +95,7 @@ def gen_perm(es, indoc='simhashes'):
             name_int = {n:i for (n,i) in zip(names, ints)}
             name_int['file'] = file
             try:
-                es.update(index=indoc, doc_type=indoc, id=xid, body={"doc":name_int})
+                es.update(index=indoc, doc_type="simhashes", id=xid, body={"doc":name_int})
             except Exception as e:
                 logging.error(e)
         result = es.scroll(result['_scroll_id'], scroll='6m')
@@ -106,9 +106,9 @@ def distance(a, b):
     return bin(a ^ b).count('1')
 
 
-def query_distance_3(es, oid, key, val, low, high, indoc='simhash'):
+def query_distance_3(es, oid, key, val, low, high, indoc='git_simhashes'):
     result = es.search(index=indoc,
-                       doc_type=indoc,
+                       doc_type="simhashes",
                        body={"query": {"range":
                                            {key: {"gte": low,
                                                   "lte": high,
@@ -120,7 +120,7 @@ def query_distance_3(es, oid, key, val, low, high, indoc='simhash'):
             xid = doc['_id']
             hashval = doc['_source'].get(key)
             file = doc['_source']['file']
-            if distance(hashval, val) <= 3 and oid != xid:
+            if distance(hashval, val) <= 0 and oid != xid:
                 logging.info("{} matches {}".format(oid, xid))
                 if file in match:
                     pass
@@ -130,9 +130,9 @@ def query_distance_3(es, oid, key, val, low, high, indoc='simhash'):
     return match
 
 
-def query_perm(es, indoc='simhashes'):
+def query_perm(es, indoc='git_simhashes'):
     try:
-        result = es.search(index=indoc, doc_type=indoc, body={"query": {"match_all": {}}}, scroll='1m')
+        result = es.search(index=indoc, doc_type="simhashes", body={"query": {"match_all": {}}}, scroll='1m')
         counts = [j for i,j in permutes(64)]
         res = {}
         num = 1
@@ -180,11 +180,11 @@ if __name__ == '__main__':
     # x = range_int(7135637346109630000, 31)
     #print(x[0])
     # print(x[1])
-    logging.basicConfig(filename="permute2.log", level=logging.INFO)
+    logging.basicConfig(filename="..\\data\\git\\git.log", level=logging.INFO)
     es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
-    # gen_perm(es)
-    logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level
-    query_perm(es, 'simhashes')
+    gen_perm(es)
+    # logging.getLogger('elasticsearch').setLevel(logging.CRITICAL)  # or desired level
+    # query_perm(es, 'git_simhashes')
 
     # print(permute_int(15517852168334194449))
     # print(int_to_bits(15517852168334194449))
