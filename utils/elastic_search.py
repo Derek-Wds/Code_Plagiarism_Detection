@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, Q
 from pprint import pprint
 
-es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
+es = Elasticsearch([])
 index_name = ["winnows"]
 s = Search(using = es, index = index_name)[0:50]
 
