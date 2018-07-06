@@ -4,5 +4,5 @@
 ![current](https://img.shields.io/badge/version-1.3-blue.svg)
 
 - Based on the idea behind [MOSS](https://theory.stanford.edu/~aiken/moss/): Measure Of Software Similarity
-- Refer to the paper [sigmoid3](http://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf) and paper [similarity](https://www.cs.princeton.edu/courses/archive/spring13/cos598C/broder97resemblance.pdf)
+- Refer to the paper [sigmoid3](http://theory.stanford.edu/~aiken/publications/papers/sigmod03.pdf) and paper [similarity](https://www.cs.princeton.edu/courses/archive/spring13/cos598C/broder97resemblance.pdf) and paper [simhash](http://www-scf.usc.edu/~csci572/papers/DetectingDuplicates.pdf)
 - Similar to Stanford University's MOSS plagiarsm detection, [see here](https://theory.stanford.edu/~aiken/moss/).
