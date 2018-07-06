@@ -24,7 +24,7 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(file_handler)
 
-es = Elasticsearch([{'host':'icam-prod-ms-20','port':9200}])
+es = Elasticsearch()
 
 # get all the java file in the projects that have depth >= 5 and store them into data\\git\\git.csv
 def file_filter():
